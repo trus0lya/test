@@ -1,5 +1,6 @@
 package com.example.test.enums;
 
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

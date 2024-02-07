@@ -56,21 +56,22 @@ public class TransactionService {
         BigDecimal amountUSD = !currency.getCurrency().equals("USD")
                 ? exchangeRateRepository.getRateByCurrency(currency, Currency.USD).multiply(amount)
                 : amount;
-        List<LimitsEntity> limits = limitRepository.findLatestByExpenseCategoryAndAccountNumberForUpdate(category, accountFrom);
-        if (!limits.isEmpty()) {
-            LimitsEntity limit = limits.get(0);
+        LimitsEntity limit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.getCategory(), accountFrom);
+
+        if (limit != null) {
             Timestamp updateDateTimestamp = limit.getUpdateDate();
             Timestamp nowTimestamp = new Timestamp(System.currentTimeMillis());
             DateComparison dateComparison = new DateComparison();
+            BigDecimal newRemainsBeforeExceed;
             if (dateComparison.areTheMonthsDifferent(updateDateTimestamp, nowTimestamp)) {
-                limit.setRemainsBeforeExceed(limit.getLimitUsd().subtract(amountUSD));
+                newRemainsBeforeExceed = limit.getLimitUsd().subtract(amountUSD);
                 limit.setUpdateDate(new Timestamp(System.currentTimeMillis()));
             } else {
-                BigDecimal newRemainsBeforeExceed = limit.getRemainsBeforeExceed().subtract(amountUSD);
-                limit.setRemainsBeforeExceed(newRemainsBeforeExceed);
-                if (newRemainsBeforeExceed.compareTo(BigDecimal.ZERO) < 0) {
-                    transactionsEntity.setLimitsEntity(limit);
-                }
+                newRemainsBeforeExceed = limit.getRemainsBeforeExceed().subtract(amountUSD);
+            }
+            limit.setRemainsBeforeExceed(newRemainsBeforeExceed);
+            if (newRemainsBeforeExceed.compareTo(BigDecimal.ZERO) < 0) {
+                transactionsEntity.setLimitsEntity(limit);
             }
             limitRepository.save(limit);
         }

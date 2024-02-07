@@ -28,15 +28,15 @@ public class LimitService {
         return limitRepository.findByAccountNumber(accountNumber);
     }
     public void setLimitByExpenseCategoryAndAccountNumber(ExpenseCategory expenseCategory, Long accountNumber, BigDecimal limit) {
-        List<LimitsEntity> existingLimit = limitRepository.findLatestByExpenseCategoryAndAccountNumberForUpdate(expenseCategory, accountNumber);
+        LimitsEntity existingLimit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(expenseCategory.getCategory(), accountNumber);
         LimitsEntity limitEntity = new LimitsEntity();
         limitEntity.setAccountNumber(accountNumber);
         limitEntity.setExpenseCategory(expenseCategory);
         limitEntity.setCreationDate(new Timestamp(System.currentTimeMillis()));
         limitEntity.setLimitUsd(limit);
         limitEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-        if (!existingLimit.isEmpty()) {
-            LimitsEntity temp = existingLimit.get(0);
+        if (existingLimit != null) {
+            LimitsEntity temp = existingLimit;
             BigDecimal currentRemainsBeforeExceed = temp.getRemainsBeforeExceed();
             BigDecimal newRemainsBeforeExceed = limit.add(currentRemainsBeforeExceed.subtract(temp.getLimitUsd()));
             limitEntity.setRemainsBeforeExceed(newRemainsBeforeExceed);

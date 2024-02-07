@@ -21,7 +21,6 @@ public enum Currency {
     public static List<String> generateCurrencyPairs() {
         Currency[] currencies = Currency.values();
         List<String> pairsList = new ArrayList<>();
-
         for (int i = 0; i < currencies.length; i++) {
             for (int j = 0; j < currencies.length; j++) {
                 if (i != j) {
