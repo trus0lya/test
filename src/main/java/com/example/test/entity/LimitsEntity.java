@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+
 @Entity
 @Table(name = "limits", schema = "bank")
 @Data
@@ -38,4 +39,7 @@ public class LimitsEntity {
     @Basic
     @Column(name = "remains_before_exceed", nullable = false, precision = 2)
     private BigDecimal remainsBeforeExceed;
+    @Basic
+    @Column(name = "update_date", nullable = false)
+    private Timestamp updateDate;
 }

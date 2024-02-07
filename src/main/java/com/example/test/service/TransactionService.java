@@ -7,6 +7,8 @@ import com.example.test.enums.ExpenseCategory;
 import com.example.test.repository.ExchangeRateRepository;
 import com.example.test.repository.LimitRepository;
 import com.example.test.repository.TransactionRepository;
+import com.example.test.util.DateComparison;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +31,16 @@ public class TransactionService {
         this.limitRepository = limitRepository;
     }
 
-    public List<TransactionsEntity> getAllTransactions() {
+    public List<TransactionsEntity> getAll() {
         return transactionRepository.findAll();
     }
 
 
+    public List<TransactionsEntity> getExceededLimits(Long accountNumber) {
+        return transactionRepository.getByAccountNumberWithExceededLimit(accountNumber);
+    }
+
+    @Transactional
     public void transaction (
             Long accountFrom, Long accountTo,
             ExpenseCategory category, BigDecimal amount,
@@ -49,20 +56,24 @@ public class TransactionService {
         BigDecimal amountUSD = !currency.getCurrency().equals("USD")
                 ? exchangeRateRepository.getRateByCurrency(currency, Currency.USD).multiply(amount)
                 : amount;
-
-        limitRepository.findLatestByExpenseCategoryAndAccountNumber(category, accountFrom)
-                .ifPresentOrElse(limits -> {
-                    LimitsEntity limit = limits.get(0);
-                    BigDecimal newRemainsBeforeExceed = limit.getRemainsBeforeExceed().subtract(amountUSD);
-                    limit.setRemainsBeforeExceed(newRemainsBeforeExceed);
-                    if (newRemainsBeforeExceed.compareTo(BigDecimal.ZERO) < 0) {
-                        transactionsEntity.setLimitsEntity(limit);
-                    }
-                    limitRepository.save(limit);
-                }, () -> {
-
-                });
-
+        List<LimitsEntity> limits = limitRepository.findLatestByExpenseCategoryAndAccountNumberForUpdate(category, accountFrom);
+        if (!limits.isEmpty()) {
+            LimitsEntity limit = limits.get(0);
+            Timestamp updateDateTimestamp = limit.getUpdateDate();
+            Timestamp nowTimestamp = new Timestamp(System.currentTimeMillis());
+            DateComparison dateComparison = new DateComparison();
+            if (dateComparison.areTheMonthsDifferent(updateDateTimestamp, nowTimestamp)) {
+                limit.setRemainsBeforeExceed(limit.getLimitUsd().subtract(amountUSD));
+                limit.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+            } else {
+                BigDecimal newRemainsBeforeExceed = limit.getRemainsBeforeExceed().subtract(amountUSD);
+                limit.setRemainsBeforeExceed(newRemainsBeforeExceed);
+                if (newRemainsBeforeExceed.compareTo(BigDecimal.ZERO) < 0) {
+                    transactionsEntity.setLimitsEntity(limit);
+                }
+            }
+            limitRepository.save(limit);
+        }
         transactionRepository.save(transactionsEntity);
     }
 }

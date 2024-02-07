@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface LimitRepository extends JpaRepository<LimitsEntity, Long> {
-    @Query("SELECT l FROM LimitsEntity l WHERE l.expenseCategory = :expenseCategory AND l.accountNumber = :accountNumber ORDER BY l.creationDate DESC")
-    Optional<List<LimitsEntity>> findLatestByExpenseCategoryAndAccountNumber(@Param("expenseCategory") ExpenseCategory expenseCategory, @Param("accountNumber") Long accountNumber);
+    @Query(value = "SELECT * FROM limits WHERE expense_category = :expenseCategory AND account_number = :accountNumber ORDER BY creation_date DESC FOR UPDATE", nativeQuery = true)
+    List<LimitsEntity> findLatestByExpenseCategoryAndAccountNumberForUpdate(@Param("expenseCategory") ExpenseCategory expenseCategory, @Param("accountNumber") Long accountNumber);
+    List<LimitsEntity> findByAccountNumber(Long accountNumber);
 }

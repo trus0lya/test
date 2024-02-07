@@ -4,7 +4,8 @@ create table limits(
     expense_category ENUM('product', 'service') NOT NULL,
     limit_usd DECIMAL(8,2) NOT NULL DEFAULT 1000.00,
     creation_date DATETIME NOT NULL,
-    remains_before_exceed DECIMAL(8,2) NOT NULL
+    remains_before_exceed DECIMAL(8,2) NOT NULL,
+    update_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 create table transactions(

@@ -5,6 +5,7 @@ import com.example.test.enums.ExpenseCategory;
 import com.example.test.repository.LimitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -23,17 +24,19 @@ public class LimitService {
         return limitRepository.findAll();
     }
 
+    public List<LimitsEntity> getLimitsByAccountNumber(Long accountNumber) {
+        return limitRepository.findByAccountNumber(accountNumber);
+    }
     public void setLimitByExpenseCategoryAndAccountNumber(ExpenseCategory expenseCategory, Long accountNumber, BigDecimal limit) {
-        Optional<List<LimitsEntity>> existingLimit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(expenseCategory, accountNumber);
-
+        List<LimitsEntity> existingLimit = limitRepository.findLatestByExpenseCategoryAndAccountNumberForUpdate(expenseCategory, accountNumber);
         LimitsEntity limitEntity = new LimitsEntity();
         limitEntity.setAccountNumber(accountNumber);
         limitEntity.setExpenseCategory(expenseCategory);
         limitEntity.setCreationDate(new Timestamp(System.currentTimeMillis()));
         limitEntity.setLimitUsd(limit);
-
-        if (existingLimit.isPresent() && !existingLimit.get().isEmpty()) {
-            LimitsEntity temp = existingLimit.get().get(0);
+        limitEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+        if (!existingLimit.isEmpty()) {
+            LimitsEntity temp = existingLimit.get(0);
             BigDecimal currentRemainsBeforeExceed = temp.getRemainsBeforeExceed();
             BigDecimal newRemainsBeforeExceed = limit.add(currentRemainsBeforeExceed.subtract(temp.getLimitUsd()));
             limitEntity.setRemainsBeforeExceed(newRemainsBeforeExceed);
