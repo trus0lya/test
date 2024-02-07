@@ -6,14 +6,12 @@ import com.example.test.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("api/v1/transactions")
 public class TransactionsController {
     private final TransactionService transactionService;
 
@@ -22,7 +20,7 @@ public class TransactionsController {
         this.transactionService = transactionService;
     }
 
-    @RequestMapping(value = "trans", method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<TransactionsEntity>> getAll() {
         List<TransactionsEntity> entities = transactionService.getAllTransactions();
         if(entities.isEmpty()) {
@@ -31,7 +29,7 @@ public class TransactionsController {
         return new ResponseEntity<>(entities, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "addtrans", method =  RequestMethod.POST)
+   @PostMapping("/add")
     public void doTrans(
             @RequestBody TransactionsEntity transactionsEntity
     ) {
