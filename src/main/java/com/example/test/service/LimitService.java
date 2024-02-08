@@ -12,5 +12,5 @@ public interface LimitService {
     List<LimitsEntity> getLimitsByAccountNumber(Long accountNumber);
 
     void setLimitByExpenseCategoryAndAccountNumber(ExpenseCategory expenseCategory, Long accountNumber, BigDecimal limit);
-
+    void createLimitIfNotExist(Long accountNumber, ExpenseCategory expenseCategory);
 }

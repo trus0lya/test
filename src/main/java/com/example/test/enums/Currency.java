@@ -1,5 +1,7 @@
 package com.example.test.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,5 +32,15 @@ public enum Currency {
             }
         }
         return pairsList;
+    }
+
+    @JsonCreator
+    public static Currency forValue(String value) {
+        for (Currency currency : Currency.values()) {
+            if (currency.currency.equalsIgnoreCase(value)) {
+                return currency;
+            }
+        }
+        throw new IllegalArgumentException("Unknown currency: " + value);
     }
 }

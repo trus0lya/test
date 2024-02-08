@@ -15,9 +15,8 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "limits", schema = "bank")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@AllArgsConstructor
 public class LimitsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

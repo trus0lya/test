@@ -4,6 +4,7 @@ import com.example.test.entity.LimitsEntity;
 import com.example.test.enums.ExpenseCategory;
 import com.example.test.repository.LimitRepository;
 import com.example.test.service.LimitService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
+@Slf4j
 @Service
 public class LimitServiceImpl implements LimitService {
     private final LimitRepository limitRepository;
@@ -48,5 +50,20 @@ public class LimitServiceImpl implements LimitService {
             limitEntity.setRemainsBeforeExceed(limit);
         }
         limitRepository.save(limitEntity);
+        log.info("A customer with account number {} has set a new limit for the {} category equal to {}$.", accountNumber, expenseCategory.getCategory(), limit);
+    }
+
+    @Override
+    public void createLimitIfNotExist(Long accountNumber, ExpenseCategory expenseCategory) {
+        if (!limitRepository.existsByAccountNumberAndExpenseCategory(accountNumber, expenseCategory)) {
+            LimitsEntity limitsEntity = new LimitsEntity();
+            limitsEntity.setAccountNumber(accountNumber);
+            limitsEntity.setExpenseCategory(expenseCategory);
+            limitsEntity.setCreationDate(new Timestamp(System.currentTimeMillis()));
+            limitsEntity.setLimitUsd(new BigDecimal("1000.0000"));
+            limitsEntity.setRemainsBeforeExceed(new BigDecimal("1000.0000"));
+            limitsEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+            limitRepository.save(limitsEntity);
+        }
     }
 }

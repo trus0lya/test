@@ -1,13 +1,10 @@
 package com.example.test.entity;
 
 import com.example.test.enums.Currency;
-import com.example.test.enums.CurrencyConverter;
 import com.example.test.enums.ExpenseCategory;
 import com.example.test.enums.ExpenseCategoryConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -16,9 +13,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "transactions", schema = "bank")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class TransactionsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -44,7 +39,7 @@ public class TransactionsEntity {
 
     @Basic
     @Column(name = "currency", nullable = true)
-    @Convert(converter = CurrencyConverter.class)
+    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @Basic

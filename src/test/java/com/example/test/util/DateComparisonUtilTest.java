@@ -1,6 +1,6 @@
-package com.example.test;
+package com.example.test.util;
 
-import com.example.test.util.DateComparisonUtil;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,27 +14,17 @@ public class DateComparisonUtilTest {
         LocalDateTime now = LocalDateTime.now();
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(now);
-
-        DateComparisonUtil dc = new DateComparisonUtil();
-
-        boolean result = dc.areTheMonthsDifferent(timestamp1, timestamp2);
+        boolean result = DateComparisonUtil.areTheMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertFalse(result);
     }
 
-
-
     @Test
     void differentMonth() {
-
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime lastMonth = now.minusMonths(1);
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(lastMonth);
-
-        DateComparisonUtil dc = new DateComparisonUtil();
-
-        boolean result = dc.areTheMonthsDifferent(timestamp1, timestamp2);
-
+        boolean result = DateComparisonUtil.areTheMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertTrue(result);
     }
 
@@ -44,12 +34,7 @@ public class DateComparisonUtilTest {
         LocalDateTime lastYear = now.minusYears(1);
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(lastYear);
-
-        DateComparisonUtil dc = new DateComparisonUtil();
-
-        boolean result = dc.areTheMonthsDifferent(timestamp1, timestamp2);
-
+        boolean result = DateComparisonUtil.areTheMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertTrue(result);
     }
-
 }

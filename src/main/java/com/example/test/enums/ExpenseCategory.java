@@ -1,5 +1,7 @@
 package com.example.test.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum ExpenseCategory {
     PRODUCT("product"),
     SERVICE("service");
@@ -14,12 +16,14 @@ public enum ExpenseCategory {
         return category;
     }
 
-    public static ExpenseCategory fromString(String category) {
-        for (ExpenseCategory ec : ExpenseCategory.values()) {
-            if (ec.getCategory().equalsIgnoreCase(category)) {
-                return ec;
+    @JsonCreator
+    public static ExpenseCategory forValue(String value) {
+        for (ExpenseCategory category : ExpenseCategory.values()) {
+            if (category.name().equalsIgnoreCase(value)) {
+                return category;
             }
         }
-        throw new IllegalArgumentException("Unknown category: " + category);
+        return null; // or throw an exception
     }
+
 }

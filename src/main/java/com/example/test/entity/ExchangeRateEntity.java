@@ -14,9 +14,7 @@ import java.sql.Timestamp;
 @Table(name = "exchange_rate", schema = "bank")
 @IdClass(ExchangeRateEntityPK.class)
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class ExchangeRateEntity {
     @Id
     @Column(name = "currency_from", nullable = false)
