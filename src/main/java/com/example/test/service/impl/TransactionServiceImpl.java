@@ -7,6 +7,7 @@ import com.example.test.enums.ExpenseCategory;
 import com.example.test.repository.ExchangeRateRepository;
 import com.example.test.repository.LimitRepository;
 import com.example.test.repository.TransactionRepository;
+import com.example.test.service.ExchangeRateService;
 import com.example.test.service.LimitService;
 import com.example.test.service.TransactionService;
 import com.example.test.util.DateComparisonUtil;
@@ -23,17 +24,19 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
-    private final ExchangeRateRepository exchangeRateRepository;
+    private final ExchangeRateService exchangeRateService;
     private final LimitRepository limitRepository;
-
     private final LimitService limitService;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, ExchangeRateRepository exchangeRateRepository, LimitRepository limitRepository, LimitService limitService) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository,
+                                  LimitRepository limitRepository,
+                                  LimitService limitService,
+                                  ExchangeRateService exchangeRateService) {
         this.transactionRepository = transactionRepository;
-        this.exchangeRateRepository = exchangeRateRepository;
         this.limitRepository = limitRepository;
         this.limitService = limitService;
+        this.exchangeRateService = exchangeRateService;
     }
 
     @Override
@@ -49,7 +52,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public void transaction(Long accountFrom, Long accountTo, ExpenseCategory category, BigDecimal amount, Currency currency) {
-        limitService.createLimitIfNotExist(accountFrom, category);
+        if(!limitRepository.existsByAccountNumberAndExpenseCategory(accountFrom, category)) {
+            limitService.setLimitByExpenseCategoryAndAccountNumber(category, accountFrom, new BigDecimal("1000"));
+        }
 
         TransactionsEntity transactionsEntity = new TransactionsEntity();
         transactionsEntity.setAccountNumFrom(accountFrom);
@@ -59,7 +64,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionsEntity.setCurrency(currency);
         transactionsEntity.setDateTime(new Timestamp(System.currentTimeMillis()));
 
-        BigDecimal amountUSD = currency.getCurrency().equals("USD") ? amount : exchangeRateRepository.getRateByCurrency(currency, Currency.USD).multiply(amount);
+        BigDecimal amountUSD = exchangeRateService.convert(amount, currency, Currency.USD);
         LimitsEntity limit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.getCategory(), accountFrom);
 
         Timestamp updateDateTimestamp = limit.getUpdateDate();

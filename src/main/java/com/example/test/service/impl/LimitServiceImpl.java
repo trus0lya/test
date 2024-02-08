@@ -53,17 +53,4 @@ public class LimitServiceImpl implements LimitService {
         log.info("A customer with account number {} has set a new limit for the {} category equal to {}$.", accountNumber, expenseCategory.getCategory(), limit);
     }
 
-    @Override
-    public void createLimitIfNotExist(Long accountNumber, ExpenseCategory expenseCategory) {
-        if (!limitRepository.existsByAccountNumberAndExpenseCategory(accountNumber, expenseCategory)) {
-            LimitsEntity limitsEntity = new LimitsEntity();
-            limitsEntity.setAccountNumber(accountNumber);
-            limitsEntity.setExpenseCategory(expenseCategory);
-            limitsEntity.setCreationDate(new Timestamp(System.currentTimeMillis()));
-            limitsEntity.setLimitUsd(new BigDecimal("1000.0000"));
-            limitsEntity.setRemainsBeforeExceed(new BigDecimal("1000.0000"));
-            limitsEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-            limitRepository.save(limitsEntity);
-        }
-    }
 }

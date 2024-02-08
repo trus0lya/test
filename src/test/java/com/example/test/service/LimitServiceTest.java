@@ -127,7 +127,7 @@ public class LimitServiceTest {
         assertEquals(new BigDecimal("900.00"), savedEntity.getRemainsBeforeExceed());
     }
 
-    @Test
+    /* @Test
     void createLimitIfNotExistTest() {
         Long accountNumber = 123L;
         ExpenseCategory expenseCategory = ExpenseCategory.PRODUCT;
@@ -147,5 +147,5 @@ public class LimitServiceTest {
         limitService.createLimitIfNotExist(accountNumber, expenseCategory);
 
         verify(limitRepository, times(0)).save(any(LimitsEntity.class));
-    }
+    }*/
 }
