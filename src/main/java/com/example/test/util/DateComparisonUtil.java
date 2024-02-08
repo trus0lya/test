@@ -1,14 +1,13 @@
 package com.example.test.util;
 
+import lombok.NoArgsConstructor;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class DateComparison {
-
-    public DateComparison() {
-    }
-
-    public boolean areTheMonthsDifferent(Timestamp timestamp1, Timestamp timestamp2) {
+@NoArgsConstructor
+public class DateComparisonUtil {
+    public static boolean areTheMonthsDifferent(Timestamp timestamp1, Timestamp timestamp2) {
         LocalDateTime dateTime1 = timestamp1.toLocalDateTime();
         LocalDateTime dateTime2 = timestamp2.toLocalDateTime();
         int year1 = dateTime1.getYear();

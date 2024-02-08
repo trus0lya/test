@@ -13,7 +13,6 @@ import java.util.Map;
 
 
 @RestController
-
 @RequestMapping("api/v1/limits")
 public class LimitController {
     private final LimitService limitService;
@@ -27,22 +26,22 @@ public class LimitController {
    @GetMapping
    public ResponseEntity<List<LimitsEntity>> getAllLimits() {
        List<LimitsEntity> limits = limitService.getAll();
-       if(limits.isEmpty()) {
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       if(!limits.isEmpty()) {
+           return new ResponseEntity<>(limits, HttpStatus.OK);
        }
-       return new ResponseEntity<>(limits, HttpStatus.OK);
+       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
    }
 
     @GetMapping("/{accountNumber}")
     public ResponseEntity<?> getAllLimitsByAccountNumber(@PathVariable Long accountNumber) {
         List<LimitsEntity> limits = limitService.getLimitsByAccountNumber(accountNumber);
-        if (limits.isEmpty()) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "No limits were found for the account with the number " + accountNumber);
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        } else {
+        if (!limits.isEmpty()) {
             return new ResponseEntity<>(limits, HttpStatus.OK);
         }
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", "No limits were found for the account with the number " + accountNumber);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
     }
 
     @PostMapping("/add")

@@ -1,13 +1,13 @@
 package com.example.test;
 
-import com.example.test.util.DateComparison;
+import com.example.test.util.DateComparisonUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class DateComparisonTest {
+public class DateComparisonUtilTest {
 
     @Test
     void sameDay() {
@@ -15,7 +15,7 @@ public class DateComparisonTest {
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(now);
 
-        DateComparison dc = new DateComparison();
+        DateComparisonUtil dc = new DateComparisonUtil();
 
         boolean result = dc.areTheMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertFalse(result);
@@ -31,7 +31,7 @@ public class DateComparisonTest {
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(lastMonth);
 
-        DateComparison dc = new DateComparison();
+        DateComparisonUtil dc = new DateComparisonUtil();
 
         boolean result = dc.areTheMonthsDifferent(timestamp1, timestamp2);
 
@@ -45,7 +45,7 @@ public class DateComparisonTest {
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(lastYear);
 
-        DateComparison dc = new DateComparison();
+        DateComparisonUtil dc = new DateComparisonUtil();
 
         boolean result = dc.areTheMonthsDifferent(timestamp1, timestamp2);
 
