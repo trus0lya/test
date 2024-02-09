@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface LimitService {
     List<LimitsEntity> getAll();
-
     List<LimitsEntity> getLimitsByAccountNumber(Long accountNumber);
-
     void setLimitByExpenseCategoryAndAccountNumber(ExpenseCategory expenseCategory, Long accountNumber, BigDecimal limit);
 }

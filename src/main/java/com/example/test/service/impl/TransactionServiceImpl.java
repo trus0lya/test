@@ -4,7 +4,6 @@ import com.example.test.entity.LimitsEntity;
 import com.example.test.entity.TransactionsEntity;
 import com.example.test.enums.Currency;
 import com.example.test.enums.ExpenseCategory;
-import com.example.test.repository.ExchangeRateRepository;
 import com.example.test.repository.LimitRepository;
 import com.example.test.repository.TransactionRepository;
 import com.example.test.service.ExchangeRateService;
@@ -38,12 +37,6 @@ public class TransactionServiceImpl implements TransactionService {
         this.limitService = limitService;
         this.exchangeRateService = exchangeRateService;
     }
-
-    @Override
-    public List<TransactionsEntity> getAll() {
-        return transactionRepository.findAll();
-    }
-
     @Override
     public List<TransactionsEntity> getExceededLimits(Long accountNumber) {
         return transactionRepository.getByAccountNumberWithExceededLimit(accountNumber);
@@ -51,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public void transaction(Long accountFrom, Long accountTo, ExpenseCategory category, BigDecimal amount, Currency currency) {
+    public void addTransaction(Long accountFrom, Long accountTo, ExpenseCategory category, BigDecimal amount, Currency currency) {
         if(!limitRepository.existsByAccountNumberAndExpenseCategory(accountFrom, category)) {
             limitService.setLimitByExpenseCategoryAndAccountNumber(category, accountFrom, new BigDecimal("1000"));
         }
@@ -65,7 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionsEntity.setDateTime(new Timestamp(System.currentTimeMillis()));
 
         BigDecimal amountUSD = exchangeRateService.convert(amount, currency, Currency.USD);
-        LimitsEntity limit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.getCategory(), accountFrom);
+        LimitsEntity limit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.toString(), accountFrom);
 
         Timestamp updateDateTimestamp = limit.getUpdateDate();
         Timestamp nowTimestamp = new Timestamp(System.currentTimeMillis());
@@ -85,6 +78,6 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transactionsEntity);
 
         log.info("A transaction has been completed. {} {} were transferred from account number {} to account number {} in the {} category.",
-                amount, currency.getCurrency(), accountFrom, accountTo, category.getCategory());
+                amount, currency.toString(), accountFrom, accountTo, category.toString());
     }
 }

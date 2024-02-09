@@ -1,11 +1,10 @@
 package com.example.test.entity;
 
 import com.example.test.enums.ExpenseCategory;
-import com.example.test.enums.ExpenseCategoryConverter;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -27,7 +26,7 @@ public class LimitsEntity {
     private Long accountNumber;
     @Basic
     @Column(name = "expense_category", nullable = false)
-    @Convert(converter = ExpenseCategoryConverter.class)
+    @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
     @Basic
     @Column(name = "limit_usd", nullable = false, precision = 2)

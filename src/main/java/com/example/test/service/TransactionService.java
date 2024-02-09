@@ -8,11 +8,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TransactionService {
-    List<TransactionsEntity> getAll();
-
     List<TransactionsEntity> getExceededLimits(Long accountNumber);
 
-    void transaction(
+    void addTransaction(
             Long accountFrom, Long accountTo,
             ExpenseCategory category, BigDecimal amount,
             Currency currency

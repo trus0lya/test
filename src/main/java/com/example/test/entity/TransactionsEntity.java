@@ -2,7 +2,7 @@ package com.example.test.entity;
 
 import com.example.test.enums.Currency;
 import com.example.test.enums.ExpenseCategory;
-import com.example.test.enums.ExpenseCategoryConverter;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,7 @@ public class TransactionsEntity {
 
     @Basic
     @Column(name = "expense_category", nullable = false)
-    @Convert(converter = ExpenseCategoryConverter.class)
+    @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
 
     @Basic
