@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ExchangeRateService {
     List<ExchangeRateEntity> getAll();
-
     BigDecimal convert(BigDecimal amount, Currency currencyFrom, Currency currencyTo);
     void init();
 }
