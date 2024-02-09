@@ -23,9 +23,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class TransactionServiceTest {
     @Autowired
-    TransactionService transactionService;
-    @MockBean
-    private  LimitService limitService;
+    private TransactionService transactionService;
     @MockBean
     private  TransactionRepository transactionRepository;
     @MockBean
