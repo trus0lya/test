@@ -12,5 +12,5 @@ import java.math.BigDecimal;
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRateEntity, ExchangeRateEntityPK> {
      @Query("SELECT e.rate FROM ExchangeRateEntity e WHERE e.currencyFrom = ?1 AND e.currencyTo = ?2")
-     BigDecimal getRateByCurrency(Currency currency_from, Currency currency_to);
+     BigDecimal getRateByCurrency(Currency currencyFrom, Currency currencyTo);
 }
