@@ -24,9 +24,6 @@ public class ExchangeRateController {
     @GetMapping
     public ResponseEntity<List<ExchangeRateEntity>> getAll() {
         List<ExchangeRateEntity> entities = exchangeRateService.getAll();
-        if(!entities.isEmpty()) {
-            return new ResponseEntity<>(entities, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(entities, HttpStatus.OK);
     }
 }
