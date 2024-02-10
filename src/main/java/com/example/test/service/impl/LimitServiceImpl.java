@@ -43,7 +43,7 @@ public class LimitServiceImpl implements LimitService {
         limitEntity.setLimitUsd(limit);
         limitEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));
         if (existingLimit != null &&
-                !DateComparisonUtil.areTheMonthsDifferent(existingLimit.getCreationDate(),
+                !DateComparisonUtil.isMonthsDifferent(existingLimit.getCreationDate(),
                         new Timestamp(System.currentTimeMillis()))) {
             LimitsEntity temp = existingLimit;
             BigDecimal currentRemainsBeforeExceed = temp.getRemainsBeforeExceed();

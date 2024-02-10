@@ -14,7 +14,7 @@ public class DateComparisonUtilTest {
         LocalDateTime now = LocalDateTime.now();
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(now);
-        boolean result = DateComparisonUtil.areTheMonthsDifferent(timestamp1, timestamp2);
+        boolean result = DateComparisonUtil.isMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertFalse(result);
     }
 
@@ -24,7 +24,7 @@ public class DateComparisonUtilTest {
         LocalDateTime lastMonth = now.minusMonths(1);
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(lastMonth);
-        boolean result = DateComparisonUtil.areTheMonthsDifferent(timestamp1, timestamp2);
+        boolean result = DateComparisonUtil.isMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertTrue(result);
     }
 
@@ -34,7 +34,7 @@ public class DateComparisonUtilTest {
         LocalDateTime lastYear = now.minusYears(1);
         Timestamp timestamp1 = Timestamp.valueOf(now);
         Timestamp timestamp2 = Timestamp.valueOf(lastYear);
-        boolean result = DateComparisonUtil.areTheMonthsDifferent(timestamp1, timestamp2);
+        boolean result = DateComparisonUtil.isMonthsDifferent(timestamp1, timestamp2);
         Assertions.assertTrue(result);
     }
 }

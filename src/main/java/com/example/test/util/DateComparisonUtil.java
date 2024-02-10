@@ -6,9 +6,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class DateComparisonUtil {
-    public static boolean areTheMonthsDifferent(Timestamp timestamp1, Timestamp timestamp2) {
-        LocalDateTime dateTime1 = timestamp1.toLocalDateTime();
-        LocalDateTime dateTime2 = timestamp2.toLocalDateTime();
+    public static boolean isMonthsDifferent(Timestamp first, Timestamp second) {
+        LocalDateTime dateTime1 = first.toLocalDateTime();
+        LocalDateTime dateTime2 = second.toLocalDateTime();
         int year1 = dateTime1.getYear();
         int month1 = dateTime1.getMonthValue();
         int year2 = dateTime2.getYear();

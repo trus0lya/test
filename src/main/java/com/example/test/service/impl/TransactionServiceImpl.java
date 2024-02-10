@@ -63,7 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
         Timestamp updateDateTimestamp = limit.getUpdateDate();
         Timestamp nowTimestamp = new Timestamp(System.currentTimeMillis());
         BigDecimal newRemainsBeforeExceed;
-        if (DateComparisonUtil.areTheMonthsDifferent(updateDateTimestamp, nowTimestamp)) {
+        if (DateComparisonUtil.isMonthsDifferent(updateDateTimestamp, nowTimestamp)) {
             newRemainsBeforeExceed = limit.getLimitUsd().subtract(amountUSD);
             limit.setUpdateDate(new Timestamp(System.currentTimeMillis()));
         } else {
