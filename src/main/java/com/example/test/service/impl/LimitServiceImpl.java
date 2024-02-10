@@ -55,5 +55,4 @@ public class LimitServiceImpl implements LimitService {
         limitRepository.save(limitEntity);
         log.info("A customer with account number {} has set a new limit for the {} category equal to {}$.", accountNumber, expenseCategory, limit);
     }
-
 }

@@ -30,10 +30,10 @@ public class LimitServiceTest {
 
     @Test
     void getAllLimitsTest() {
-        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.product,
+        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.PRODUCT,
                 new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()),
                 new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-        LimitsEntity limit2 = new LimitsEntity(2L, 2L, ExpenseCategory.service,
+        LimitsEntity limit2 = new LimitsEntity(2L, 2L, ExpenseCategory.SERVICE,
                 new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()),
                 new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
         List<LimitsEntity> expectedLimits = Arrays.asList(limit1, limit2);
@@ -62,11 +62,11 @@ public class LimitServiceTest {
     @Test
     void getLimitsByAccountNumberTest() {
         Long accountNumber = 1L;
-        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.product,
+        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.PRODUCT,
                 new BigDecimal("1000.000"),
                 new Timestamp(System.currentTimeMillis()),
                 new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-        LimitsEntity limit2 = new LimitsEntity(3L, 1L, ExpenseCategory.service,
+        LimitsEntity limit2 = new LimitsEntity(3L, 1L, ExpenseCategory.SERVICE,
                 new BigDecimal("1000.000"),
                 new Timestamp(System.currentTimeMillis()),
                 new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
@@ -96,12 +96,12 @@ public class LimitServiceTest {
     @Test
     void getLimitsByAccountNumberTest3() {
         Long accountNumber = 1L;
-        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.product,
+        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.PRODUCT,
                 new BigDecimal("1000.000"),
                 new Timestamp(System.currentTimeMillis()),
                 new BigDecimal("934.00"),
                 new Timestamp(System.currentTimeMillis()));
-        LimitsEntity limit2 = new LimitsEntity(2L, 1L, ExpenseCategory.service, new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()), new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
+        LimitsEntity limit2 = new LimitsEntity(2L, 1L, ExpenseCategory.SERVICE, new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()), new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
 
         List<LimitsEntity> expectedLimits = Arrays.asList(limit1, limit2);
         when(limitRepository.findByAccountNumber(accountNumber)).thenReturn(expectedLimits);
@@ -116,7 +116,7 @@ public class LimitServiceTest {
     void setLimitByExpenseCategoryAndAccountNumberTest() {
         Long accountNumber = 1L;
         BigDecimal limitAmount = new BigDecimal("1000.00");
-        ExpenseCategory expenseCategory = ExpenseCategory.product;
+        ExpenseCategory expenseCategory = ExpenseCategory.PRODUCT;
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(anyString(), anyLong())).thenReturn(null);
 
@@ -132,7 +132,7 @@ public class LimitServiceTest {
         BigDecimal newLimitAmount = new BigDecimal("1000.00");
 
 
-        ExpenseCategory expenseCategory = ExpenseCategory.service;
+        ExpenseCategory expenseCategory = ExpenseCategory.SERVICE;
         LimitsEntity existingLimit = new LimitsEntity();
         existingLimit.setLimitUsd(existingLimitAmount);
         existingLimit.setRemainsBeforeExceed(new BigDecimal("400.00"));
@@ -155,7 +155,7 @@ public class LimitServiceTest {
         Long accountNumber = 1L;
         BigDecimal existingLimitAmount = new BigDecimal("500.00");
         BigDecimal newLimitAmount = new BigDecimal("1000.00");
-        ExpenseCategory expenseCategory = ExpenseCategory.service;
+        ExpenseCategory expenseCategory = ExpenseCategory.SERVICE;
         LimitsEntity existingLimit = new LimitsEntity();
         existingLimit.setLimitUsd(existingLimitAmount);
         existingLimit.setRemainsBeforeExceed(new BigDecimal("400.00"));

@@ -30,13 +30,15 @@ public class TransactionServiceTest {
     private  ExchangeRateService exchangeRateService;
     @MockBean
     private  LimitRepository limitRepository;
+    @MockBean
+    private CurrencyService currencyService;
 
 
     @Test
     void addTransactionTest1() {
         Long accountFrom = 1L;
         Long accountTo = 2L;
-        ExpenseCategory category = ExpenseCategory.service;
+        ExpenseCategory category = ExpenseCategory.SERVICE;
         BigDecimal amount = new BigDecimal("600");
         Currency currency = Currency.USD;
         when(limitRepository.existsByAccountNumberAndExpenseCategory(accountFrom, category)).thenReturn(true);
@@ -49,7 +51,7 @@ public class TransactionServiceTest {
         transactionsEntity.setCurrency(currency);
         transactionsEntity.setDateTime(new Timestamp(System.currentTimeMillis()));
 
-        when(exchangeRateService.convert(amount, currency, Currency.USD)).thenReturn(new BigDecimal(600));
+        when(currencyService.convert(amount, currency, Currency.USD)).thenReturn(new BigDecimal(600));
 
         LimitsEntity limit = new LimitsEntity();
         limit.setAccountNumber(accountFrom);
@@ -77,7 +79,7 @@ public class TransactionServiceTest {
     void addTransactionTest2() {
         Long accountFrom = 1L;
         Long accountTo = 2L;
-        ExpenseCategory category = ExpenseCategory.service;
+        ExpenseCategory category = ExpenseCategory.SERVICE;
         BigDecimal amount = new BigDecimal("600");
         Currency currency = Currency.USD;
         when(limitRepository.existsByAccountNumberAndExpenseCategory(accountFrom, category)).thenReturn(true);
@@ -90,7 +92,7 @@ public class TransactionServiceTest {
         transactionsEntity.setCurrency(currency);
         transactionsEntity.setDateTime(new Timestamp(System.currentTimeMillis()));
 
-        when(exchangeRateService.convert(amount, currency, Currency.USD)).thenReturn(new BigDecimal(600));
+        when(currencyService.convert(amount, currency, Currency.USD)).thenReturn(new BigDecimal(600));
 
         LimitsEntity limit = new LimitsEntity();
         limit.setAccountNumber(accountFrom);
@@ -118,7 +120,7 @@ public class TransactionServiceTest {
     void addTransactionTest3() {
         Long accountFrom = 1L;
         Long accountTo = 2L;
-        ExpenseCategory category = ExpenseCategory.service;
+        ExpenseCategory category = ExpenseCategory.SERVICE;
         BigDecimal amount = new BigDecimal("600");
         Currency currency = Currency.USD;
         when(limitRepository.existsByAccountNumberAndExpenseCategory(accountFrom, category)).thenReturn(true);
@@ -131,7 +133,7 @@ public class TransactionServiceTest {
         transactionsEntity.setCurrency(currency);
         transactionsEntity.setDateTime(new Timestamp(System.currentTimeMillis()));
 
-        when(exchangeRateService.convert(amount, currency, Currency.USD)).thenReturn(new BigDecimal(600));
+        when(currencyService.convert(amount, currency, Currency.USD)).thenReturn(new BigDecimal(600));
 
         LimitsEntity limit = new LimitsEntity();
         limit.setAccountNumber(accountFrom);

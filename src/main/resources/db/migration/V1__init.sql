@@ -1,7 +1,7 @@
 create table limits(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     account_number INT NOT NULL,
-    expense_category ENUM('product', 'service') NOT NULL,
+    expense_category ENUM('PRODUCT', 'SERVICE') NOT NULL,
     limit_usd DECIMAL(8,2) NOT NULL DEFAULT 1000.00,
     creation_date DATETIME NOT NULL,
     remains_before_exceed DECIMAL(8,2) NOT NULL,
@@ -12,7 +12,7 @@ create table transactions(
      id BIGINT AUTO_INCREMENT PRIMARY KEY,
      account_num_from BIGINT NOT NULL,
      account_num_to BIGINT NOT NULL,
-     expense_category ENUM('product', 'service') NOT NULL,
+     expense_category ENUM('PRODUCT', 'SERVICE') NOT NULL,
      amount DECIMAL(8,2),
      currency ENUM('KZT', 'RUB', 'USD'),
      date_time DATETIME NOT NULL,

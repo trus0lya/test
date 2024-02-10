@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
 public class DateComparisonUtil {
     public static boolean areTheMonthsDifferent(Timestamp timestamp1, Timestamp timestamp2) {
         LocalDateTime dateTime1 = timestamp1.toLocalDateTime();

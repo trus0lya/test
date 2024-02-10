@@ -6,7 +6,7 @@ import com.example.test.enums.Currency;
 import com.example.test.enums.ExpenseCategory;
 import com.example.test.repository.LimitRepository;
 import com.example.test.repository.TransactionRepository;
-import com.example.test.service.ExchangeRateService;
+import com.example.test.service.CurrencyService;
 import com.example.test.service.LimitService;
 import com.example.test.service.TransactionService;
 import com.example.test.util.DateComparisonUtil;
@@ -23,19 +23,19 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
-    private final ExchangeRateService exchangeRateService;
     private final LimitRepository limitRepository;
     private final LimitService limitService;
+    private final CurrencyService currencyService;
 
     @Autowired
     public TransactionServiceImpl(TransactionRepository transactionRepository,
                                   LimitRepository limitRepository,
                                   LimitService limitService,
-                                  ExchangeRateService exchangeRateService) {
+                                  CurrencyService currencyService) {
         this.transactionRepository = transactionRepository;
         this.limitRepository = limitRepository;
         this.limitService = limitService;
-        this.exchangeRateService = exchangeRateService;
+        this.currencyService = currencyService;
     }
     @Override
     public List<TransactionsEntity> getExceededLimits(Long accountNumber) {
@@ -57,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionsEntity.setCurrency(currency);
         transactionsEntity.setDateTime(new Timestamp(System.currentTimeMillis()));
 
-        BigDecimal amountUSD = exchangeRateService.convert(amount, currency, Currency.USD);
+        BigDecimal amountUSD = currencyService.convert(amount, currency, Currency.USD);
         LimitsEntity limit = limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.toString(), accountFrom);
 
         Timestamp updateDateTimestamp = limit.getUpdateDate();
@@ -78,6 +78,6 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transactionsEntity);
 
         log.info("A transaction has been completed. {} {} were transferred from account number {} to account number {} in the {} category.",
-                amount, currency.toString(), accountFrom, accountTo, category.toString());
+                amount, currency.toString(), accountFrom, accountTo, category);
     }
 }
