@@ -1,6 +1,8 @@
 package com.example.test.controller;
 
 import com.example.test.entity.LimitsEntity;
+import com.example.test.mapper.impl.LimitMapper;
+import com.example.test.model.Limit;
 import com.example.test.service.LimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,21 +10,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/limits")
 public class LimitController {
     private final LimitService limitService;
 
+    private final LimitMapper limitMapper;
+
     @Autowired
-    public LimitController(LimitService limitService) {
+    public LimitController(LimitService limitService,
+                           LimitMapper limitMapper) {
         this.limitService = limitService;
+        this.limitMapper = limitMapper;
     }
 
     @GetMapping("/{accountNumber}")
-    public ResponseEntity<?> getAllLimitsByAccountNumber(@PathVariable Long accountNumber) {
+    public ResponseEntity<List<Limit>> getAllLimitsByAccountNumber(@PathVariable Long accountNumber) {
         List<LimitsEntity> limits = limitService.getLimitsByAccountNumber(accountNumber);
-        return new ResponseEntity<>(limits, HttpStatus.OK);
+        List<Limit> list = limits.stream()
+                .map(limitMapper::convertEntityToDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping("/add")
