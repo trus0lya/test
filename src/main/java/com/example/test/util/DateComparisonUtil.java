@@ -1,7 +1,5 @@
 package com.example.test.util;
 
-import lombok.NoArgsConstructor;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 

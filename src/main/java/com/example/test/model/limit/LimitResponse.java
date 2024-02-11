@@ -1,4 +1,4 @@
-package com.example.test.model;
+package com.example.test.model.limit;
 
 import com.example.test.enums.ExpenseCategory;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
-public class Limit {
+public class LimitResponse {
     private Long accountNumber;
     private ExpenseCategory expenseCategory;
     private BigDecimal limitUsd;

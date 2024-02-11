@@ -1,4 +1,4 @@
-package com.example.test.model;
+package com.example.test.model.exchangerate;
 
 import com.example.test.enums.Currency;
 import lombok.AllArgsConstructor;

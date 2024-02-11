@@ -4,6 +4,9 @@ import com.example.test.entity.LimitsEntity;
 import com.example.test.entity.TransactionsEntity;
 import com.example.test.enums.Currency;
 import com.example.test.enums.ExpenseCategory;
+import com.example.test.mapper.impl.TransactionMapper;
+import com.example.test.model.transaction.TransactionRequest;
+import com.example.test.model.transaction.TransactionResponse;
 import com.example.test.repository.LimitRepository;
 import com.example.test.repository.TransactionRepository;
 import com.example.test.service.CurrencyService;
@@ -26,25 +29,34 @@ public class TransactionServiceImpl implements TransactionService {
     private final LimitRepository limitRepository;
     private final LimitService limitService;
     private final CurrencyService currencyService;
+    private final TransactionMapper transactionMapper;
 
     @Autowired
     public TransactionServiceImpl(TransactionRepository transactionRepository,
                                   LimitRepository limitRepository,
                                   LimitService limitService,
-                                  CurrencyService currencyService) {
+                                  CurrencyService currencyService,
+                                  TransactionMapper transactionMapper) {
         this.transactionRepository = transactionRepository;
         this.limitRepository = limitRepository;
         this.limitService = limitService;
         this.currencyService = currencyService;
+        this.transactionMapper = transactionMapper;
     }
     @Override
-    public List<TransactionsEntity> getExceededLimits(Long accountNumber) {
-        return transactionRepository.getByAccountNumberWithExceededLimit(accountNumber);
+    public List<TransactionResponse> getExceededLimits(Long accountNumber) {
+        return transactionRepository.getByAccountNumberWithExceededLimit(accountNumber).
+                stream().map(transactionMapper::convertEntityToDTO).toList();
     }
 
     @Override
     @Transactional
-    public void addTransaction(Long accountFrom, Long accountTo, ExpenseCategory category, BigDecimal amount, Currency currency) {
+    public void addTransaction(TransactionRequest transactionRequest) {
+        Long accountFrom = transactionRequest.getAccountNumFrom();
+        Long accountTo = transactionRequest.getAccountNumTo();
+        ExpenseCategory category = transactionRequest.getExpenseCategory();
+        BigDecimal amount = transactionRequest.getAmount();
+        Currency currency = transactionRequest.getCurrency();
         if(!limitRepository.existsByAccountNumberAndExpenseCategory(accountFrom, category)) {
             limitService.setLimitByExpenseCategoryAndAccountNumber(category, accountFrom, new BigDecimal("1000"));
         }

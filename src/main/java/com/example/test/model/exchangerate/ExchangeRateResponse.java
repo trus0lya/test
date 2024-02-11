@@ -1,4 +1,4 @@
-package com.example.test.model;
+package com.example.test.model.exchangerate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

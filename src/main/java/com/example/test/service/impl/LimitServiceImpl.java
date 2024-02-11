@@ -2,6 +2,8 @@ package com.example.test.service.impl;
 
 import com.example.test.entity.LimitsEntity;
 import com.example.test.enums.ExpenseCategory;
+import com.example.test.mapper.impl.LimitMapper;
+import com.example.test.model.limit.LimitResponse;
 import com.example.test.repository.LimitRepository;
 import com.example.test.service.LimitService;
 import com.example.test.util.DateComparisonUtil;
@@ -18,19 +20,22 @@ import java.util.List;
 public class LimitServiceImpl implements LimitService {
     private final LimitRepository limitRepository;
 
+    private final LimitMapper limitMapper;
+
     @Autowired
-    public LimitServiceImpl(LimitRepository limitRepository) {
+    public LimitServiceImpl(LimitRepository limitRepository, LimitMapper limitMapper) {
         this.limitRepository = limitRepository;
+        this.limitMapper = limitMapper;
     }
 
     @Override
-    public List<LimitsEntity> getLimitsByAccountNumber(Long accountNumber) {
-        return limitRepository.findByAccountNumber(accountNumber);
+    public List<LimitResponse> getLimitsByAccountNumber(Long accountNumber) {
+        return limitRepository.findByAccountNumber(accountNumber).stream().map(limitMapper::convertEntityToDTO).toList();
     }
 
     @Override
-    public List<LimitsEntity> getAll() {
-        return limitRepository.findAll();
+    public List<LimitResponse> getAll() {
+        return limitRepository.findAll().stream().map(limitMapper::convertEntityToDTO).toList();
     }
 
     @Override
