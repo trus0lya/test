@@ -48,11 +48,10 @@ public class LimitServiceImpl implements LimitService {
         limitEntity.setLimitUsd(limit);
         limitEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));
         if (existingLimit != null &&
-                !DateComparisonUtil.isMonthsDifferent(existingLimit.getCreationDate(),
+                !DateComparisonUtil.isMonthsDifferent(existingLimit.getUpdateDate(),
                         new Timestamp(System.currentTimeMillis()))) {
-            LimitsEntity temp = existingLimit;
-            BigDecimal currentRemainsBeforeExceed = temp.getRemainsBeforeExceed();
-            BigDecimal newRemainsBeforeExceed = limit.add(currentRemainsBeforeExceed.subtract(temp.getLimitUsd()));
+            BigDecimal currentRemainsBeforeExceed = existingLimit.getRemainsBeforeExceed();
+            BigDecimal newRemainsBeforeExceed = limit.add(currentRemainsBeforeExceed.subtract(existingLimit.getLimitUsd()));
             limitEntity.setRemainsBeforeExceed(newRemainsBeforeExceed);
         } else {
             limitEntity.setRemainsBeforeExceed(limit);

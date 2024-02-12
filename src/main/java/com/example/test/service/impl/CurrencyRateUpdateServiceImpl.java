@@ -51,7 +51,7 @@ public class CurrencyRateUpdateServiceImpl implements CurrencyRateUpdateService 
                 exchangeRateRepository.save(entity);
                 log.info("{} the exchange rate was successfully received {} -> {}: {}", timestamp, currencies[0], currencies[1], response.getRate());
             } else {
-                log.warn("{} the exchange rate for the currency pair could not be obtained {}", timestamp, pair);
+                log.error("{} the exchange rate for the currency pair could not be obtained {}", timestamp, pair);
             }
         }
     }
