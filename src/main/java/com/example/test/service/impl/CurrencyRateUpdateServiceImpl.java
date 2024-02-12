@@ -34,7 +34,7 @@ public class CurrencyRateUpdateServiceImpl implements CurrencyRateUpdateService 
     }
 
     @Override
-    @Scheduled(cron = "${dailyCurrencyUpdateCron}", zone = "UTC")
+    @Scheduled(cron = "${dailyCurrencyUpdateCron}")
     public void updateDailyExchangeRates() {
         List<String> currencyPairs = CurrencyUtil.generateCurrencyPairs();
         for (String pair : currencyPairs) {
