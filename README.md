@@ -18,15 +18,24 @@
 - Пример URL: /api/v1/transactions/1
 - Тело ответа:
 ```json
-{
-  "id": 36,
-  "accountNumber": 1,
-  "expenseCategory": "product",
-  "limitUsd": 1000.0000,
-  "creationDate": "2024-02-09T08:01:31.000+00:00",
-  "remainsBeforeExceed": 1000.00,
-  "updateDate": "2024-02-09T08:01:31.000+00:00"
-}
+[
+  {
+    "accountNumFrom": 1,
+    "accountNumTo": 2,
+    "expenseCategory": "PRODUCT",
+    "amount": 2000.0000,
+    "currency": "USD",
+    "dateTime": "2024-02-10 18:01:06",
+    "limit": {
+      "accountNumber": 1,
+      "expenseCategory": "PRODUCT",
+      "limitUsd": 1000.0000,
+      "creationDate": "2024-02-10 18:01:06",
+      "remainsBeforeExceed": -1000.0000,
+      "updateDate": "2024-02-10 18:01:06"
+    }
+  }
+]
 ```
 
 #### Добавление транзакции
@@ -38,7 +47,7 @@
 {
     "accountNumFrom": 4,
     "accountNumTo": 5,
-    "expenseCategory": "product",
+    "expenseCategory": "PRODUCT",
     "amount": 9000,
     "currency": "RUB"
   }
@@ -55,24 +64,32 @@
 - Пример URL: /api/v1/limits/5
 - Тело ответа:
 ```json
-{
-  "id": 2,
-  "accountNumFrom": 1,
-  "accountNumTo": 2,
-  "expenseCategory": "service",
-  "amount": 500.0000,
-  "currency": "USD",
-  "dateTime": "2024-02-09T08:02:16.000+00:00",
-  "limitsEntity": {
-    "id": 37,
+[
+  {
     "accountNumber": 1,
-    "expenseCategory": "service",
+    "expenseCategory": "SERVICE",
+    "limitUsd": 1800.0000,
+    "creationDate": "2024-02-10 18:00:07",
+    "remainsBeforeExceed": 1800.0000,
+    "updateDate": "2024-02-10 18:00:07"
+  },
+  {
+    "accountNumber": 1,
+    "expenseCategory": "PRODUCT",
     "limitUsd": 1000.0000,
-    "creationDate": "2024-02-09T08:01:45.000+00:00",
-    "remainsBeforeExceed": -100.00,
-    "updateDate": "2024-02-09T08:01:45.000+00:00"
+    "creationDate": "2024-02-10 18:01:06",
+    "remainsBeforeExceed": -1000.0000,
+    "updateDate": "2024-02-10 18:01:06"
+  },
+  {
+    "accountNumber": 1,
+    "expenseCategory": "PRODUCT",
+    "limitUsd": 3000.0000,
+    "creationDate": "2024-02-10 18:01:28",
+    "remainsBeforeExceed": 1000.0000,
+    "updateDate": "2024-02-10 18:01:28"
   }
-}
+]
 ```
 
 #### Добавление нового лимита
@@ -83,7 +100,7 @@
 ```json
  {
     "accountNumber": 5,
-    "expenseCategory": "service",
+    "expenseCategory": "SERVICE",
     "limitUsd": 1800
   }
 ```
@@ -100,42 +117,42 @@
 - Тело ответа:
 ```json
 [
-    {
-        "currencyFrom": "KZT",
-        "currencyTo": "RUB",
-        "rate": 0.2031,
-        "dateOfUpdate": "2024-02-08T11:21:02.000+00:00"
-    },
-    {
-        "currencyFrom": "KZT",
-        "currencyTo": "USD",
-        "rate": 0.0000,
-        "dateOfUpdate": "2024-02-08T11:21:02.000+00:00"
-    },
-    {
-        "currencyFrom": "RUB",
-        "currencyTo": "KZT",
-        "rate": 4.9300,
-        "dateOfUpdate": "2024-02-08T11:21:01.000+00:00"
-    },
-    {
-        "currencyFrom": "RUB",
-        "currencyTo": "USD",
-        "rate": 0.0110,
-        "dateOfUpdate": "2024-02-08T11:21:01.000+00:00"
-    },
-    {
-        "currencyFrom": "USD",
-        "currencyTo": "KZT",
-        "rate": 450.1550,
-        "dateOfUpdate": "2024-02-08T11:21:03.000+00:00"
-    },
-    {
-        "currencyFrom": "USD",
-        "currencyTo": "RUB",
-        "rate": 90.5300,
-        "dateOfUpdate": "2024-02-08T11:21:03.000+00:00"
-    }
+  {
+    "currencyFrom": "KZT",
+    "currencyTo": "RUB",
+    "rate": 0.2035,
+    "dateOfUpdate": "2024-02-11 16:02:01"
+  },
+  {
+    "currencyFrom": "KZT",
+    "currencyTo": "USD",
+    "rate": 0.0000,
+    "dateOfUpdate": "2024-02-11 16:02:02"
+  },
+  {
+    "currencyFrom": "RUB",
+    "currencyTo": "KZT",
+    "rate": 4.9132,
+    "dateOfUpdate": "2024-02-11 16:02:01"
+  },
+  {
+    "currencyFrom": "RUB",
+    "currencyTo": "USD",
+    "rate": 0.0110,
+    "dateOfUpdate": "2024-02-11 16:02:01"
+  },
+  {
+    "currencyFrom": "USD",
+    "currencyTo": "KZT",
+    "rate": 446.6050,
+    "dateOfUpdate": "2024-02-11 16:02:03"
+  },
+  {
+    "currencyFrom": "USD",
+    "currencyTo": "RUB",
+    "rate": 91.3850,
+    "dateOfUpdate": "2024-02-11 16:02:02"
+  }
 ]
 ```
 
