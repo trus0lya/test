@@ -6,7 +6,7 @@ import com.example.test.model.exchangerate.ExchangeRateResponse;
 import com.example.test.repository.ExchangeRateRepository;
 import com.example.test.service.CurrencyIntegrationService;
 import com.example.test.service.CurrencyRateUpdateService;
-import com.example.test.util.CurrencyUtils;
+import com.example.test.util.CurrencyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,7 +36,7 @@ public class CurrencyRateUpdateServiceImpl implements CurrencyRateUpdateService 
     @Override
     @Scheduled(cron = "${dailyCurrencyUpdateCron}", zone = "UTC")
     public void updateDailyExchangeRates() {
-        List<String> currencyPairs = CurrencyUtils.generateCurrencyPairs();
+        List<String> currencyPairs = CurrencyUtil.generateCurrencyPairs();
         for (String pair : currencyPairs) {
             ExchangeRateResponse response = currencyIntegrationService.getExchangeRate(pair);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

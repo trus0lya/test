@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
     private final ExchangeRateRepository exchangeRateRepository;
-
     @Autowired
     public CurrencyServiceImpl(ExchangeRateRepository exchangeRateRepository) {
         this.exchangeRateRepository = exchangeRateRepository;

@@ -25,96 +25,10 @@ public class LimitServiceTest {
     @MockBean
     private LimitRepository limitRepository;
 
-   /* @Test
-    void getAllLimitsTest() {
-        Limit limit1 = new Limit(1L, ExpenseCategory.PRODUCT,
-                new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()),
-                new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-        Limit limit2 = new Limit( 2L, ExpenseCategory.SERVICE,
-                new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()),
-                new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-        List<Limit> expectedLimits = Arrays.asList(limit1, limit2);
-
-        List<Limit>
-
-        when(limitRepository.findAll()).thenReturn(expectedLimits);
-
-        List<LimitsEntity> actualLimits = limitService.getAll();
-
-        assertEquals(expectedLimits, actualLimits);
-        verify(limitRepository).findAll();
-    }
-
-    @Test
-    void getAllLimitsTest2() {
-        List<LimitsEntity> expectedLimits = Collections.emptyList();
-
-        when(limitRepository.findAll()).thenReturn(expectedLimits);
-
-        List<LimitsEntity> actualLimits = limitService.getAll();
-
-        assertEquals(expectedLimits, actualLimits);
-        verify(limitRepository).findAll();
-    }
-
-
-    @Test
-    void getLimitsByAccountNumberTest() {
-        Long accountNumber = 1L;
-        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.PRODUCT,
-                new BigDecimal("1000.000"),
-                new Timestamp(System.currentTimeMillis()),
-                new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-        LimitsEntity limit2 = new LimitsEntity(3L, 1L, ExpenseCategory.SERVICE,
-                new BigDecimal("1000.000"),
-                new Timestamp(System.currentTimeMillis()),
-                new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-        List<LimitsEntity> expectedLimits = Arrays.asList(limit1, limit2);
-
-        when(limitRepository.findByAccountNumber(accountNumber)).thenReturn(expectedLimits);
-
-        List<LimitsEntity> actualLimits = limitService.getLimitsByAccountNumber(accountNumber);
-
-        assertEquals(expectedLimits, actualLimits);
-        verify(limitRepository).findByAccountNumber(accountNumber);
-    }
-
-    @Test
-    void getLimitsByAccountNumberTest2() {
-        Long accountNumber = 3L;
-        List<LimitsEntity> expectedLimits = Collections.emptyList();
-
-        when(limitRepository.findByAccountNumber(accountNumber)).thenReturn(expectedLimits);
-
-        List<LimitsEntity> actualLimits = limitService.getLimitsByAccountNumber(accountNumber);
-
-        assertEquals(expectedLimits, actualLimits);
-        verify(limitRepository).findByAccountNumber(accountNumber);
-    }
-*/
-/*    @Test
-    void getLimitsByAccountNumberTest3() {
-        Long accountNumber = 1L;
-        LimitsEntity limit1 = new LimitsEntity(1L, 1L, ExpenseCategory.PRODUCT,
-                new BigDecimal("1000.000"),
-                new Timestamp(System.currentTimeMillis()),
-                new BigDecimal("934.00"),
-                new Timestamp(System.currentTimeMillis()));
-        LimitsEntity limit2 = new LimitsEntity(2L, 1L, ExpenseCategory.SERVICE, new BigDecimal("1000.000"), new Timestamp(System.currentTimeMillis()), new BigDecimal("934.00"), new Timestamp(System.currentTimeMillis()));
-
-        List<LimitsEntity> expectedLimits = Arrays.asList(limit1, limit2);
-        when(limitRepository.findByAccountNumber(accountNumber)).thenReturn(expectedLimits);
-
-        List<LimitsEntity> actualLimits = limitService.getLimitsByAccountNumber(accountNumber);
-
-        assertEquals(expectedLimits, actualLimits);
-        verify(limitRepository).findByAccountNumber(accountNumber);
-    }*/
-
     @Test
     void setLimitByExpenseCategoryAndAccountNumberTest() {
         Long accountNumber = 1L;
-        BigDecimal limitAmount = new BigDecimal("1000.00");
+        BigDecimal limitAmount = new BigDecimal(1000);
         ExpenseCategory expenseCategory = ExpenseCategory.PRODUCT;
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(anyString(), anyLong())).thenReturn(null);
@@ -127,14 +41,14 @@ public class LimitServiceTest {
     @Test
     void setLimitByExpenseCategoryAndAccountNumberTest2() {
         Long accountNumber = 1L;
-        BigDecimal existingLimitAmount = new BigDecimal("500.00");
-        BigDecimal newLimitAmount = new BigDecimal("1000.00");
+        BigDecimal existingLimitAmount = new BigDecimal(500);
+        BigDecimal newLimitAmount = new BigDecimal(1000);
 
 
         ExpenseCategory expenseCategory = ExpenseCategory.SERVICE;
         LimitsEntity existingLimit = new LimitsEntity();
         existingLimit.setLimitUsd(existingLimitAmount);
-        existingLimit.setRemainsBeforeExceed(new BigDecimal("400.00"));
+        existingLimit.setRemainsBeforeExceed(new BigDecimal(400));
         existingLimit.setCreationDate(new Timestamp(System.currentTimeMillis()));
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(expenseCategory.toString(), accountNumber)).thenReturn(existingLimit);
@@ -145,19 +59,19 @@ public class LimitServiceTest {
 
         verify(limitRepository).save(limitEntityCaptor.capture());
         LimitsEntity savedEntity = limitEntityCaptor.getValue();
-        assertEquals(new BigDecimal("900.00"), savedEntity.getRemainsBeforeExceed());
+        assertEquals(new BigDecimal(900), savedEntity.getRemainsBeforeExceed());
     }
 
 
     @Test
     void setLimitByExpenseCategoryAndAccountNumberTest3() {
         Long accountNumber = 1L;
-        BigDecimal existingLimitAmount = new BigDecimal("500.00");
-        BigDecimal newLimitAmount = new BigDecimal("1000.00");
+        BigDecimal existingLimitAmount = new BigDecimal(500);
+        BigDecimal newLimitAmount = new BigDecimal(1000);
         ExpenseCategory expenseCategory = ExpenseCategory.SERVICE;
         LimitsEntity existingLimit = new LimitsEntity();
         existingLimit.setLimitUsd(existingLimitAmount);
-        existingLimit.setRemainsBeforeExceed(new BigDecimal("400.00"));
+        existingLimit.setRemainsBeforeExceed(new BigDecimal(400));
         existingLimit.setCreationDate(new Timestamp(1706605144));
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(expenseCategory.toString(), accountNumber)).thenReturn(existingLimit);
@@ -167,6 +81,6 @@ public class LimitServiceTest {
 
         verify(limitRepository).save(limitEntityCaptor.capture());
         LimitsEntity savedEntity = limitEntityCaptor.getValue();
-        assertEquals(new BigDecimal("1000.00"), savedEntity.getRemainsBeforeExceed());
+        assertEquals(new BigDecimal(1000), savedEntity.getRemainsBeforeExceed());
     }
 }

@@ -5,7 +5,7 @@ import com.example.test.enums.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrencyUtils {
+public class CurrencyUtil {
     public static List<String> generateCurrencyPairs() {
         Currency[] currencies = Currency.values();
         List<String> pairsList = new ArrayList<>();

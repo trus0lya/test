@@ -46,7 +46,5 @@ public class TransactionsEntity {
     @Column(name = "date_time", nullable = false)
     private Timestamp dateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "limit_exceeded_id", referencedColumnName = "id")
-    private LimitsEntity limitsEntity;
+
 }

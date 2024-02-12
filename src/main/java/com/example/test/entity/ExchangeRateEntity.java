@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @IdClass(ExchangeRateEntityPK.class)
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ExchangeRateEntity {
     @Id
     @Column(name = "currency_from", nullable = false)

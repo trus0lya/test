@@ -4,6 +4,7 @@ import com.example.test.entity.LimitsEntity;
 import com.example.test.entity.TransactionsEntity;
 import com.example.test.enums.Currency;
 import com.example.test.enums.ExpenseCategory;
+import com.example.test.model.transaction.TransactionRequest;
 import com.example.test.repository.LimitRepository;
 import com.example.test.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,6 @@ public class TransactionServiceTest {
     private TransactionService transactionService;
     @MockBean
     private  TransactionRepository transactionRepository;
-    @MockBean
-    private  ExchangeRateService exchangeRateService;
     @MockBean
     private  LimitRepository limitRepository;
     @MockBean
@@ -63,7 +62,8 @@ public class TransactionServiceTest {
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.toString(), accountFrom)).thenReturn(limit);
 
-        transactionService.addTransaction(accountFrom, accountTo, category, amount, currency);
+        TransactionRequest transactionRequest = new TransactionRequest(accountFrom, accountTo, category, amount, currency);
+        transactionService.addTransaction(transactionRequest);
         ArgumentCaptor<LimitsEntity> limitEntityCaptor = ArgumentCaptor.forClass(LimitsEntity.class);
         ArgumentCaptor<TransactionsEntity> transactionsCaptor = ArgumentCaptor.forClass(TransactionsEntity.class);
 
@@ -104,7 +104,9 @@ public class TransactionServiceTest {
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.toString(), accountFrom)).thenReturn(limit);
 
-        transactionService.addTransaction(accountFrom, accountTo, category, amount, currency);
+        TransactionRequest transactionRequest = new TransactionRequest(accountFrom, accountTo, category, amount, currency);
+
+        transactionService.addTransaction(transactionRequest);
         ArgumentCaptor<LimitsEntity> limitEntityCaptor = ArgumentCaptor.forClass(LimitsEntity.class);
         ArgumentCaptor<TransactionsEntity> transactionsCaptor = ArgumentCaptor.forClass(TransactionsEntity.class);
 
@@ -145,7 +147,9 @@ public class TransactionServiceTest {
 
         when(limitRepository.findLatestByExpenseCategoryAndAccountNumber(category.toString(), accountFrom)).thenReturn(limit);
 
-        transactionService.addTransaction(accountFrom, accountTo, category, amount, currency);
+        TransactionRequest transactionRequest = new TransactionRequest(accountFrom, accountTo, category, amount, currency);
+
+        transactionService.addTransaction(transactionRequest);
         ArgumentCaptor<LimitsEntity> limitEntityCaptor = ArgumentCaptor.forClass(LimitsEntity.class);
         ArgumentCaptor<TransactionsEntity> transactionsCaptor = ArgumentCaptor.forClass(TransactionsEntity.class);
 
